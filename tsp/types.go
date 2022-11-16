@@ -16,10 +16,11 @@ type TSPInstance struct {
 	Distance    [][]int
 }
 
-type TSPSolution struct {
-	Tour []int
-	Cost int
-}
+// Replaced by solution.go
+// type TSPSolution struct {
+// 	Tour []int
+// 	Cost int
+// }
 
 type Parameters struct {
 	FileName string

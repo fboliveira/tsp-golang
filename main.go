@@ -43,32 +43,33 @@ func main() {
 
 	tsp.PrintInstance(instance, false)
 
-	// Greedy
-	greedy := tsp.PartialGreedy(instance, 0.0)
+	solution := tsp.Canonical(instance)
+	solution.Print()
+	solution.CalculateCost()
+	fmt.Printf("Canonical - Revised Cost = %d\n", solution.TotalCost())
 
-	fmt.Println(greedy.Tour)
-	fmt.Printf("Greedy Cost = %d\n", greedy.Cost)
+	// // Greedy
+	// greedy := tsp.PartialGreedy(instance, 0.0)
 
-	greedy.Cost, err = tsp.CalculateCost(greedy.Tour, instance)
+	// greedy.Print()
+	// greedy.CalculateCost()
 
-	if err != nil {
-		fmt.Println(err)
-	}
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
 
-	fmt.Printf("Greedy - Revised Cost = %d\n", greedy.Cost)
+	// fmt.Printf("Greedy - Revised Cost = %d\n", greedy.TotalCost())
 
-	// Partial Greedy
-	partial_greedy := tsp.PartialGreedy(instance, 0.3)
+	// // Partial Greedy
+	// partial_greedy := tsp.PartialGreedy(instance, 0.3)
 
-	fmt.Println(partial_greedy.Tour)
-	fmt.Printf("Partial Greedy Cost = %d\n", partial_greedy.Cost)
+	// partial_greedy.Print()
+	// partial_greedy.CalculateCost()
 
-	partial_greedy.Cost, err = tsp.CalculateCost(partial_greedy.Tour, instance)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
 
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	fmt.Printf("Partial Greedy - Revised Cost = %d\n", partial_greedy.Cost)
+	// fmt.Printf("Partial Greedy - Revised Cost = %d\n", partial_greedy.TotalCost())
 
 }

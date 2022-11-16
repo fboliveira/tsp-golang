@@ -16,19 +16,10 @@ func removeFromList(list *list.List, value int) {
 	}
 }
 
-// func printList(list *list.List) {
+func PartialGreedy(instance *TSPInstance, alpha float64) Solution {
 
-// 	for e := list.Front(); e != nil; e = e.Next() {
-// 		fmt.Printf("%d\t", e.Value)
-// 	}
-// 	fmt.Println()
-// }
-
-func PartialGreedy(instance *TSPInstance, alpha float64) TSPSolution {
-
-	var solution TSPSolution
-
-	solution.Cost = 0.0
+	var solution Solution
+	solution.Init(instance)
 
 	random_visit_ordem := rand.Perm(instance.Dimension)
 	customers := list.New()
@@ -38,8 +29,9 @@ func PartialGreedy(instance *TSPInstance, alpha float64) TSPSolution {
 	}
 
 	// printList(customers)
+	// solution.Tour = append(solution.Tour, customers.Front().Value.(int))
+	solution.InsertFront(customers.Front().Value.(int))
 
-	solution.Tour = append(solution.Tour, customers.Front().Value.(int))
 	last_customer_index := customers.Front().Value.(int) - 1
 	customers.Remove(customers.Front())
 
@@ -85,9 +77,10 @@ func PartialGreedy(instance *TSPInstance, alpha float64) TSPSolution {
 		removeFromList(customers, candidate+1)
 		// printList(customers)
 
-		solution.Tour = append(solution.Tour, candidate+1)
-		cost_to_add := instance.Distance[last_customer_index][candidate]
-		solution.Cost += cost_to_add
+		// solution.Tour  = append(solution.Tour, candidate+1)
+		solution.InsertBack(candidate + 1)
+		// cost_to_add := instance.Distance[last_customer_index][candidate]
+		// solution.Cost += cost_to_add
 
 		// fmt.Printf("Cost Added = %.2f\tCost = %.2f\n", cost_to_add, solution.Cost)
 
@@ -95,21 +88,22 @@ func PartialGreedy(instance *TSPInstance, alpha float64) TSPSolution {
 
 	}
 
-	first := solution.Tour[0] - 1
-	last := solution.Tour[len(solution.Tour)-1] - 1
-	solution.Cost += instance.Distance[last][first]
+	// first := solution.Tour[0] - 1
+	// last := solution.Tour[len(solution.Tour)-1] - 1
+	// solution.Cost += instance.Distance[last][first]
 
 	return solution
 
 }
 
 // TSPLIB instance canonical solution to verify distance calculating
-func Canonical(instance *TSPInstance) TSPSolution {
+func Canonical(instance *TSPInstance) Solution {
 
-	var solution TSPSolution
+	var solution Solution
+	solution.Init(instance)
 
 	for i := 1; i <= instance.Dimension; i++ {
-		solution.Tour = append(solution.Tour, i)
+		solution.InsertBack(i)
 	}
 
 	return solution

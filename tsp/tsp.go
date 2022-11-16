@@ -152,30 +152,30 @@ func PrintInstance(instance *TSPInstance, isToPrintData bool) {
 
 }
 
-func CalculateCost(tour []int, instance *TSPInstance) (int, error) {
+// func CalculateCost(tour []int, instance *TSPInstance) (int, error) {
 
-	cost := int(math.Inf(0))
-	var err error
+// 	cost := int(math.Inf(0))
+// 	var err error
 
-	if len(tour) != instance.Dimension {
-		return cost, fmt.Errorf("the number of customer is different from the instance dimension! Expected: %d - Received: %d", instance.Dimension, len(tour))
-	}
+// 	if len(tour) != instance.Dimension {
+// 		return cost, fmt.Errorf("the number of customer is different from the instance dimension! Expected: %d - Received: %d", instance.Dimension, len(tour))
+// 	}
 
-	cost = 0
-	// Index to Index + 1
-	for index, item := range tour {
-		if index < len(tour)-1 {
-			ci, cj := item, tour[index+1]
-			cost += instance.Distance[ci-1][cj-1]
+// 	cost = 0
+// 	// Index to Index + 1
+// 	for index, item := range tour {
+// 		if index < len(tour)-1 {
+// 			ci, cj := item, tour[index+1]
+// 			cost += instance.Distance[ci-1][cj-1]
 
-		}
-	}
+// 		}
+// 	}
 
-	// From last to first
-	cost += instance.Distance[tour[len(tour)-1]-1][tour[0]-1]
-	return cost, err
+// 	// From last to first
+// 	cost += instance.Distance[tour[len(tour)-1]-1][tour[0]-1]
+// 	return cost, err
 
-}
+// }
 
 // func validateTour(tour []int, instance *TSPInstance) (bool, error) {
 

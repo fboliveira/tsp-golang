@@ -43,10 +43,10 @@ func main() {
 
 	tsp.PrintInstance(instance, false)
 
-	solution := tsp.Canonical(instance)
+	solution := tsp.CanonicalReverse(instance)
 	solution.Print()
 	solution.CalculateCost()
-	fmt.Printf("Canonical - Revised Cost = %d\n", solution.TotalCost())
+	fmt.Printf("Canonical Reverse - Revised Cost = %d\n", solution.TotalCost())
 
 	// // Greedy
 	// greedy := tsp.PartialGreedy(instance, 0.0)

@@ -104,6 +104,23 @@ func Canonical(instance *TSPInstance) Solution {
 
 	for i := 1; i <= instance.Dimension; i++ {
 		solution.InsertBack(i)
+		// fmt.Println("Cost after insert back...")
+		// solution.TotalCost()
+	}
+
+	return solution
+
+}
+
+func CanonicalReverse(instance *TSPInstance) Solution {
+
+	var solution Solution
+	solution.Init(instance)
+
+	for i := instance.Dimension; i >= 1; i-- {
+		solution.InsertFront(i)
+		// fmt.Println("Cost after insert back...")
+		// solution.TotalCost()
 	}
 
 	return solution

@@ -27,7 +27,6 @@ func TestInstances(t *testing.T) {
 	}
 
 	solution := Canonical(instance)
-	solution.Print()
 
 	if solution.TotalCost() != literature_canonical_cost {
 		t.Fatal("[TestInstances] Distance should be ", literature_canonical_cost, ", but got ", solution.TotalCost())

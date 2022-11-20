@@ -57,7 +57,7 @@ func TestSolutionOperations(t *testing.T) {
 			solution.InsertBack(customers[0] + 1)
 			name = "InsertBack"
 		default:
-			item := solution.list.Front()
+			item := solution.List.Front()
 			move := rand.Intn(solution.Len() - 2)
 
 			for i := 0; i < move; i++ {
@@ -96,23 +96,24 @@ func TestCostToSwap(t *testing.T) {
 	solution := Canonical(instance)
 
 	for i := 0; i < instance.Dimension; i++ {
-		source_advance := rand.Intn(instance.Dimension)
-		destination_advance := source_advance
 
-		for source_advance == destination_advance {
-			destination_advance = rand.Intn(instance.Dimension)
-		}
+		// source_advance := rand.Intn(instance.Dimension)
+		// destination_advance := source_advance
 
-		source := solution.list.Front()
-		destination := solution.list.Front()
+		// for source_advance == destination_advance {
+		// 	destination_advance = rand.Intn(instance.Dimension)
+		// }
 
-		for i := 0; i < source_advance; i++ {
-			source = source.Next()
-		}
+		source := solution.List.Front()
+		destination := source.Next()
 
-		for i := 0; i < destination_advance; i++ {
-			destination = destination.Next()
-		}
+		// for i := 0; i < source_advance; i++ {
+		// 	source = source.Next()
+		// }
+
+		// for i := 0; i < destination_advance; i++ {
+		// 	destination = destination.Next()
+		// }
 
 		t.Logf("Cost before = %d", solution.TotalCost())
 		t.Logf("Source: %d\tDestination: %d", source.Value.(int), destination.Value.(int))
@@ -129,7 +130,7 @@ func TestCostToSwap(t *testing.T) {
 
 	}
 
-	for item := solution.list.Front(); item != nil; item = item.Next() {
+	for item := solution.List.Front(); item != nil; item = item.Next() {
 
 	}
 

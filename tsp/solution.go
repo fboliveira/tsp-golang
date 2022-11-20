@@ -11,7 +11,7 @@ type Item struct {
 }
 
 type Solution struct {
-	list     list.List
+	List     list.List
 	cost     int
 	instance *TSPInstance
 }
@@ -29,14 +29,14 @@ func (solution *Solution) distance(customerI, customerJ int) int {
 
 // Create a new/empty tour
 func (solution *Solution) Init(instance *TSPInstance) *Solution {
-	solution.list.Init()
+	solution.List.Init()
 	solution.instance = instance
 	solution.cost = 0
 	return solution
 }
 
 func (solution *Solution) Len() int {
-	return solution.list.Len()
+	return solution.List.Len()
 }
 
 func CustomerValue(item *list.Element) int {
@@ -49,11 +49,11 @@ func CustomerPosition(item *list.Element) int {
 
 func (solution *Solution) InsertAfter(customer int, item *list.Element) *Solution {
 
-	if item == solution.list.Front() {
+	if item == solution.List.Front() {
 		solution.InsertFront(customer)
 	}
 
-	if item == solution.list.Back() {
+	if item == solution.List.Back() {
 		solution.InsertBack(customer)
 	}
 
@@ -61,7 +61,7 @@ func (solution *Solution) InsertAfter(customer int, item *list.Element) *Solutio
 	// Remove cost from item to afterItem
 	deltaCost := solution.cost - solution.distance(item.Value.(int), item.Next().Value.(int))
 
-	new := solution.list.InsertAfter(customer, item)
+	new := solution.List.InsertAfter(customer, item)
 
 	// Front -> ... -> item -> New -> afterNew (previous afterItem) -> Last (-> Front)
 	// Add Cost from item to New
@@ -82,17 +82,17 @@ func (solution *Solution) InsertBack(customer int) *Solution {
 	if solution.Len() > 0 {
 		// Front -> ... -> Last (-> Front)
 		// Remove cost from last to current front
-		deltaCost -= solution.distance(solution.list.Back().Value.(int), solution.list.Front().Value.(int))
+		deltaCost -= solution.distance(solution.List.Back().Value.(int), solution.List.Front().Value.(int))
 	}
 
 	// Front -> ... -> Previous Back -> New (-> Front)
-	solution.list.PushBack(customer)
+	solution.List.PushBack(customer)
 
-	if solution.list.Back().Prev() != nil {
-		deltaCost += solution.distance(solution.list.Back().Prev().Value.(int), solution.list.Back().Value.(int))
+	if solution.List.Back().Prev() != nil {
+		deltaCost += solution.distance(solution.List.Back().Prev().Value.(int), solution.List.Back().Value.(int))
 	}
 
-	deltaCost += solution.distance(solution.list.Back().Value.(int), solution.list.Front().Value.(int))
+	deltaCost += solution.distance(solution.List.Back().Value.(int), solution.List.Front().Value.(int))
 
 	solution.cost = deltaCost
 
@@ -105,23 +105,23 @@ func (solution *Solution) InsertFront(customer int) *Solution {
 	deltaCost := solution.TotalCost()
 
 	if solution.Len() == 0 {
-		solution.list.PushBack(customer)
+		solution.List.PushBack(customer)
 	} else {
 		// Front -> ... -> Last (-> Front)
 		// Remove cost from last to current front
-		deltaCost -= solution.distance(solution.list.Back().Value.(int), solution.list.Front().Value.(int))
+		deltaCost -= solution.distance(solution.List.Back().Value.(int), solution.List.Front().Value.(int))
 
 		// New -> Front -> ... -> Last (-> New)
-		solution.list.InsertBefore(customer, solution.list.Front())
+		solution.List.InsertBefore(customer, solution.List.Front())
 
 	}
 
-	if solution.list.Front().Next() != nil {
+	if solution.List.Front().Next() != nil {
 		// New -> previous front -> ... -> Last
-		deltaCost += solution.distance(solution.list.Front().Value.(int), solution.list.Front().Next().Value.(int))
+		deltaCost += solution.distance(solution.List.Front().Value.(int), solution.List.Front().Next().Value.(int))
 	}
 
-	deltaCost += solution.distance(solution.list.Back().Value.(int), solution.list.Front().Value.(int))
+	deltaCost += solution.distance(solution.List.Back().Value.(int), solution.List.Front().Value.(int))
 
 	solution.cost = deltaCost
 
@@ -132,14 +132,14 @@ func (solution *Solution) CalculateTotalDistance() int {
 
 	cost := 0
 	// Index to Index + 1
-	for customer := solution.list.Front(); customer != nil; customer = customer.Next() {
+	for customer := solution.List.Front(); customer != nil; customer = customer.Next() {
 		if customer.Next() != nil {
 			cost += solution.distance(customer.Value.(int), customer.Next().Value.(int))
 		}
 	}
 
 	// From last to first
-	cost += solution.distance(solution.list.Back().Value.(int), solution.list.Front().Value.(int))
+	cost += solution.distance(solution.List.Back().Value.(int), solution.List.Front().Value.(int))
 
 	return cost
 
@@ -163,13 +163,13 @@ func (solution *Solution) Print() {
 
 	util.PrintLine()
 
-	for customer := solution.list.Front(); customer != nil; customer = customer.Next() {
+	for customer := solution.List.Front(); customer != nil; customer = customer.Next() {
 		if customer.Next() != nil {
 			fmt.Printf("[%d] -> ", customer.Value.(int))
 		}
 	}
 
-	fmt.Printf("[%d]\n", solution.list.Back().Value.(int))
+	fmt.Printf("[%d]\n", solution.List.Back().Value.(int))
 	fmt.Printf("Total cost = %d\n", solution.TotalCost())
 
 	util.PrintLine()
@@ -191,37 +191,37 @@ func (solution *Solution) CostToSwap(source *list.Element, destination *list.Ele
 
 	deltaCost := 0
 
-	if source == solution.list.Front() {
+	if source == solution.List.Front() {
 		// Remove distance from last to front
-		deltaCost -= solution.distance(CustomerPosition(solution.list.Back()), CustomerPosition(solution.list.Front()))
+		deltaCost -= solution.distance(CustomerValue(solution.List.Back()), CustomerValue(solution.List.Front()))
 		// Add distance from last to destination (as new front)
-		deltaCost += solution.distance(CustomerPosition(solution.list.Back()), CustomerPosition(destination))
+		deltaCost += solution.distance(CustomerValue(solution.List.Back()), CustomerValue(destination))
 	}
 
-	if destination == solution.list.Back() {
+	if destination == solution.List.Back() {
 		// Remove distance from destionation to front
-		deltaCost -= solution.distance(CustomerPosition(destination), CustomerPosition(solution.list.Front()))
+		deltaCost -= solution.distance(CustomerValue(destination), CustomerValue(solution.List.Front()))
 		// Add distance from last to source (as new front)
-		deltaCost += solution.distance(CustomerPosition(solution.list.Back()), CustomerPosition(source))
+		deltaCost += solution.distance(CustomerValue(solution.List.Back()), CustomerValue(source))
 	}
 
 	if source.Next() == destination {
 		// [source] -> [destination]
-		deltaCost -= solution.distance(CustomerPosition(source), CustomerPosition(destination))
+		deltaCost -= solution.distance(CustomerValue(source), CustomerValue(destination))
 	}
 
 	if source.Prev() != nil {
 		// Remove [previous source] -> [source]
-		deltaCost -= solution.distance(CustomerPosition(source.Prev()), CustomerPosition(source))
+		deltaCost -= solution.distance(CustomerValue(source.Prev()), CustomerValue(source))
 		// Add [previous source] -> [destination]
-		deltaCost += solution.distance(CustomerPosition(source.Prev()), CustomerPosition(destination))
+		deltaCost += solution.distance(CustomerValue(source.Prev()), CustomerValue(destination))
 	}
 
 	if destination.Next() != nil {
 		// Remove [destination] -> [next destination]
-		deltaCost -= solution.distance(CustomerPosition(destination), CustomerPosition(destination.Next()))
+		deltaCost -= solution.distance(CustomerValue(destination), CustomerValue(destination.Next()))
 		// Add [source] -> [next destination]
-		deltaCost += solution.distance(CustomerPosition(source), CustomerPosition(destination.Next()))
+		deltaCost += solution.distance(CustomerValue(source), CustomerValue(destination.Next()))
 	}
 
 	return deltaCost

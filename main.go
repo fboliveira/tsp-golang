@@ -41,13 +41,24 @@ func main() {
 		os.Exit(-1)
 	}
 
-	tsp.PrintInstance(instance, false)
+	tsp.PrintInstance(instance, true)
 
-	solution := tsp.CanonicalReverse(instance)
+	solution := tsp.Canonical(instance)
 	solution.Print()
 	solution.CalculateCost()
-	fmt.Printf("Canonical Reverse - Revised Cost = %d\n", solution.TotalCost())
+	fmt.Printf("Canonical - Revised Cost = %d\n", solution.TotalCost())
 
+	source := solution.List.Front()
+	destination := source.Next()
+
+	solution.Swap(source, destination)
+
+	cost := solution.TotalCost()
+	calculatedCost := solution.CalculateTotalDistance()
+
+	if cost != calculatedCost {
+		fmt.Printf("Cost error at InsertFront on startup: Expected %d\tgot %d", calculatedCost, cost)
+	}
 	// // Greedy
 	// greedy := tsp.PartialGreedy(instance, 0.0)
 
